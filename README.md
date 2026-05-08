@@ -186,6 +186,45 @@ Commands:
 
 ---
 
+## set_rtc_time.py — RTC 時刻自動設定スクリプト
+
+PC の現在時刻を RTC に書き込む Python スクリプトです。
+[uv](https://github.com/astral-sh/uv) を使えば `pyserial` を事前インストールせず、そのまま実行できます。
+
+### インストール不要で即実行
+
+```bash
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+### 使い方
+
+```bash
+# 時刻だけ合わせる
+uv run set_rtc_time.py COM3          # Windows
+uv run set_rtc_time.py /dev/ttyUSB0  # Linux / macOS
+
+# 時刻 + unlock/lock スケジュールも設定
+uv run set_rtc_time.py COM3 --unlock 08:00 --lock 22:00
+```
+
+### オプション
+
+| オプション | 説明 | デフォルト |
+| --- | --- | --- |
+| `port` | シリアルポート (必須) | — |
+| `--baud` | ボーレート | `115200` |
+| `--unlock HH:MM` | 毎日の解錠時刻 | 変更しない |
+| `--lock HH:MM` | 毎日の施錠時刻 | 変更しない |
+
+> スクリプトは起動後 8 秒以内にシリアルシェルを検出し、`time set`・`unlock`・`lock`・`run` コマンドを自動送信します。
+
+---
+
 ## 対応 SESAME モデル
 
 `SESAME_MODEL` に指定できる値:
