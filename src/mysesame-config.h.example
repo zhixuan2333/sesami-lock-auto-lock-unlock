@@ -1,0 +1,11 @@
+#ifndef MYSESAME_CONFIG_H__
+#define MYSESAME_CONFIG_H__
+#include <Sesame.h>
+
+// https://sesame-qr-reader.vercel.app/
+
+#define SESAME_SECRET "***SECERT***"
+#define SESAME_PK "***PUBLICK KEY***"
+#define SESAME_MODEL Sesame::model_t::sesame_5_pro
+
+#endif
