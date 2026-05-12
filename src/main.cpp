@@ -158,6 +158,13 @@ void initRtc()
   // 時刻はシリアルシェルから設定する
 }
 
+// DayOfWeek(): 0=日, 1=月, 2=火, 3=水, 4=木, 5=金, 6=土
+bool isWeekend(const RtcDateTime &dt)
+{
+  uint8_t dow = dt.DayOfWeek();
+  return dow == 0 || dow == 6; // 日曜 or 土曜
+}
+
 // ---------- シリアルシェル ----------
 
 bool shell_exit = false;
@@ -319,7 +326,11 @@ void setup()
   int32_t unlock_t = unlock_hour * 3600 + unlock_min * 60;
   int32_t lock_t   = lock_hour   * 3600 + lock_min   * 60;
 
-  bool should_unlock = !unlocked_today && cur >= unlock_t;
+  bool weekend = isWeekend(now);
+  if (weekend)
+    Serial.println("Weekend (JST): auto-unlock skipped.");
+
+  bool should_unlock = !unlocked_today && cur >= unlock_t && !weekend;
   bool should_lock   = !locked_today   && cur >= lock_t;
 
   // 両方期限切れの場合はlockを優先
